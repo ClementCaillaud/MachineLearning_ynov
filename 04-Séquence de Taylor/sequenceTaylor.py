@@ -43,24 +43,13 @@ def taylor():
     print("Fontion d'origine : ")
     plt.plot(x, np.exp(x))
     plt.show()
-    #graph(lambda x: np.exp(x))
-    #graph(approximation)
     
     nMax = 8
     for n in range(1, nMax+1):
         print("Approximation n°", n, " :")
+        plt.plot(x, np.exp(x))
         plt.plot(x, approximation(x, n))
         plt.show()
-   
-    print("Approximation finale :")     
-    plt.plot(x, np.exp(x))
-    plt.plot(x, approximation(x, nMax))
-    plt.show()
-
-def graph(fonction):
-   x = np.arange(-5, 6)
-   y = fonction(x,2)
-   plt.plot(x, y)
 
 def approximation(x, nMax):
     resultat = 0
