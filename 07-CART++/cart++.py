@@ -28,18 +28,29 @@ def main():
     data = faces['data']
     target = faces['target']
     #Création d'un jeu de train et de test
-    x_train, x_test, y_train, y_test = train_test_split(data, target, test_size=0.2, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(data, target, test_size=0.25, random_state=42)
     #Quelques infos sur les données
     print("\n400 photographies du visage de 40 personnes")
-    print("Entrainement sur 80% des données")
-    print("Test sur 20% des données\n")
+    print("Entrainement sur 75% des données")
+    print("Test sur 25% des données\n")
     
     random_forest(x_train, x_test, y_train, y_test)
     ovr(x_train, x_test, y_train, y_test)
+    ovo(x_train, x_test, y_train, y_test)
 
 def ovo(x_train, x_test, y_train, y_test):
     print("\nRégression logistique OvO")
-    
+    #Création du classifieur
+    lr = LogisticRegression(solver='lbfgs', max_iter=400, multi_class='auto')
+    #Entrainement des données
+    time_start = timer()
+    lr.fit(x_train, y_train)
+    time_end = timer()
+    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
+    #Classification OvO
+    OneVsOneClassifier(lr)
+    #Prédiction sur le jeu de test
+    prediction(lr, x_test, y_test)
 
 def ovr(x_train, x_test, y_train, y_test):
     print("\nRégression logistique OvR")
