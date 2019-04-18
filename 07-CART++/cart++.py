@@ -31,26 +31,28 @@ def main():
     print("400 photographies du visage de 40 personnes")
     print("Entrainement sur 80% des données")
     print("Test sur 20% des données")
-    print()
     
     random_forest(x_train, x_test, y_train, y_test)
 
 def ovo(x_train, x_test, y_train, y_test):
+    print()
     print("Régression logistique OvO")
     
 
 def ovr(x_train, x_test, y_train, y_test):
+    print()
     print("Régression logistique OvR")
     
 def random_forest(x_train, x_test, y_train, y_test):
+    print()
     print("Random forest")
     #Création du classifieur
-    rfc = RandomForestClassifier(n_estimators=100, max_depth=2, random_state=0)
+    rfc = RandomForestClassifier(n_estimators=100, random_state=0)
     #Entrainement
     time_start = timer()
     rfc.fit(x_train, y_train)
     time_end = timer()
-    print("L'entrainement a duré ", time_end - time_start, " secondes")
+    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
     #Prédiction sur le jeu de test
     prediction(rfc, x_test, y_test)
 
@@ -65,7 +67,7 @@ def prediction(classifieur, x_test, y_test):
             nb_predictions_correctes += 1
         nb_predictions += 1
     time_end = timer()
-    print("La prédiction a duré ", time_end - time_start, " secondes")
+    print("La prédiction de 100 photos a duré ", time_end - time_start, " secondes")
     #Affichage précision
     print("Précision de la prédiction : ", (nb_predictions_correctes / nb_predictions) * 100, "%")
 
