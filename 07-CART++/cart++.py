@@ -17,6 +17,8 @@ from sklearn.datasets import fetch_olivetti_faces
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.multiclass import OneVsOneClassifier
 from timeit import default_timer as timer
 
 def main():
@@ -28,24 +30,33 @@ def main():
     #Création d'un jeu de train et de test
     x_train, x_test, y_train, y_test = train_test_split(data, target, test_size=0.2, random_state=42)
     #Quelques infos sur les données
-    print("400 photographies du visage de 40 personnes")
+    print("\n400 photographies du visage de 40 personnes")
     print("Entrainement sur 80% des données")
-    print("Test sur 20% des données")
+    print("Test sur 20% des données\n")
     
     random_forest(x_train, x_test, y_train, y_test)
+    ovr(x_train, x_test, y_train, y_test)
 
 def ovo(x_train, x_test, y_train, y_test):
-    print()
-    print("Régression logistique OvO")
+    print("\nRégression logistique OvO")
     
 
 def ovr(x_train, x_test, y_train, y_test):
-    print()
-    print("Régression logistique OvR")
+    print("\nRégression logistique OvR")
+    #Création du classifieur
+    lr = LogisticRegression(solver='lbfgs', max_iter=400, multi_class='auto')
+    #Entrainement des données
+    time_start = timer()
+    lr.fit(x_train, y_train)
+    time_end = timer()
+    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
+    #Classification OvR
+    OneVsRestClassifier(lr)
+    #Prédiction sur le jeu de test
+    prediction(lr, x_test, y_test)
     
 def random_forest(x_train, x_test, y_train, y_test):
-    print()
-    print("Random forest")
+    print("\nRandom forest")
     #Création du classifieur
     rfc = RandomForestClassifier(n_estimators=100, random_state=0)
     #Entrainement
@@ -69,7 +80,7 @@ def prediction(classifieur, x_test, y_test):
     time_end = timer()
     print("La prédiction de 100 photos a duré ", time_end - time_start, " secondes")
     #Affichage précision
-    print("Précision de la prédiction : ", (nb_predictions_correctes / nb_predictions) * 100, "%")
+    print("Précision de la prédiction : ", (nb_predictions_correctes / nb_predictions) * 100, "%\n")
 
 if __name__ == "__main__":
     main()   
