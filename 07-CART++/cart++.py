@@ -11,6 +11,7 @@ On souhaite utiliser un jeu de données réel avec :
 * une random forest 
 * une régression logistique OvR
 * une régression logistique OvO
+* un SVM
 """
 
 from sklearn.datasets import fetch_olivetti_faces
@@ -19,6 +20,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multiclass import OneVsOneClassifier
+from sklearn import svm
 from timeit import default_timer as timer
 
 def main():
@@ -37,12 +39,25 @@ def main():
     random_forest(x_train, x_test, y_train, y_test)
     ovr(x_train, x_test, y_train, y_test)
     ovo(x_train, x_test, y_train, y_test)
+    support_vector_machine(x_train, x_test, y_train, y_test)
+
+def support_vector_machine(x_train, x_test, y_train, y_test):
+    print("\nSupport Vector Machine")
+    #Création du classifieur
+    clf = svm.SVC(kernel='linear')
+    #Entrainement
+    time_start = timer()
+    clf.fit(x_train, y_train)
+    time_end = timer()
+    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
+    #Prédiction sur le jeu de test
+    prediction(clf, x_test, y_test)
 
 def ovo(x_train, x_test, y_train, y_test):
     print("\nRégression logistique OvO")
     #Création du classifieur
     lr = LogisticRegression(solver='lbfgs', max_iter=400, multi_class='auto')
-    #Entrainement des données
+    #Entrainement
     time_start = timer()
     lr.fit(x_train, y_train)
     time_end = timer()
@@ -56,7 +71,7 @@ def ovr(x_train, x_test, y_train, y_test):
     print("\nRégression logistique OvR")
     #Création du classifieur
     lr = LogisticRegression(solver='lbfgs', max_iter=400, multi_class='auto')
-    #Entrainement des données
+    #Entrainement
     time_start = timer()
     lr.fit(x_train, y_train)
     time_end = timer()
