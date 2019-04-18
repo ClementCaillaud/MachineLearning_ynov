@@ -6,7 +6,6 @@ Created on Wed Apr 10 19:11:40 2019
 """
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import make_classification
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
