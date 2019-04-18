@@ -44,7 +44,15 @@ def ovr(x_train, x_test, y_train, y_test):
     
 def random_forest(x_train, x_test, y_train, y_test):
     print("Random forest")
-    
+    #Création du classifieur
+    rfc = RandomForestClassifier(n_estimators=100, max_depth=2, random_state=0)
+    #Entrainement
+    time_start = timer()
+    rfc.fit(x_train, y_train)
+    time_end = timer()
+    print("L'entrainement a duré ", time_end - time_start, " secondes")
+    #Prédiction sur le jeu de test
+    prediction(rfc, x_test, y_test)
 
 def prediction(classifieur, x_test, y_test):
     #Initialisation statistiques
