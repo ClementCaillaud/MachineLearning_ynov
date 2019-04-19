@@ -35,7 +35,7 @@ def main():
     print("\n400 photographies du visage de 40 personnes")
     print("Entrainement sur 75% des données")
     print("Test sur 25% des données\n")
-    
+    #Utilisation des différentes méthodes
     random_forest(x_train, x_test, y_train, y_test)
     ovr(x_train, x_test, y_train, y_test)
     ovo(x_train, x_test, y_train, y_test)
@@ -46,10 +46,7 @@ def support_vector_machine(x_train, x_test, y_train, y_test):
     #Création du classifieur
     clf = svm.SVC(kernel='linear')
     #Entrainement
-    time_start = timer()
-    clf.fit(x_train, y_train)
-    time_end = timer()
-    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
+    clf = entrainement(clf, x_train, y_train)
     #Prédiction sur le jeu de test
     prediction(clf, x_test, y_test)
 
@@ -58,10 +55,7 @@ def ovo(x_train, x_test, y_train, y_test):
     #Création du classifieur
     lr = LogisticRegression(solver='lbfgs', max_iter=400, multi_class='auto')
     #Entrainement
-    time_start = timer()
-    lr.fit(x_train, y_train)
-    time_end = timer()
-    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
+    lr = entrainement(lr, x_train, y_train)
     #Classification OvO
     OneVsOneClassifier(lr)
     #Prédiction sur le jeu de test
@@ -72,10 +66,7 @@ def ovr(x_train, x_test, y_train, y_test):
     #Création du classifieur
     lr = LogisticRegression(solver='lbfgs', max_iter=400, multi_class='auto')
     #Entrainement
-    time_start = timer()
-    lr.fit(x_train, y_train)
-    time_end = timer()
-    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
+    lr = entrainement(lr, x_train, y_train)
     #Classification OvR
     OneVsRestClassifier(lr)
     #Prédiction sur le jeu de test
@@ -86,12 +77,17 @@ def random_forest(x_train, x_test, y_train, y_test):
     #Création du classifieur
     rfc = RandomForestClassifier(n_estimators=100, random_state=0)
     #Entrainement
-    time_start = timer()
-    rfc.fit(x_train, y_train)
-    time_end = timer()
-    print("L'entrainement sur 300 photos a duré ", time_end - time_start, " secondes")
+    rfc = entrainement(rfc, x_train, y_train)
     #Prédiction sur le jeu de test
     prediction(rfc, x_test, y_test)
+
+def entrainement(classifieur, x_train, y_train):
+    #Entrainement
+    time_start = timer()
+    classifieur.fit(x_train, y_train)
+    time_end = timer()
+    print("L'entrainement sur 300 photos a duré ", round(time_end - time_start, 2), " secondes")
+    return classifieur
 
 def prediction(classifieur, x_test, y_test):
     #Initialisation statistiques
@@ -104,7 +100,7 @@ def prediction(classifieur, x_test, y_test):
             nb_predictions_correctes += 1
         nb_predictions += 1
     time_end = timer()
-    print("La prédiction de 100 photos a duré ", time_end - time_start, " secondes")
+    print("La prédiction de 100 photos a duré ", round(time_end - time_start, 2), " secondes")
     #Affichage précision
     print("Précision de la prédiction : ", (nb_predictions_correctes / nb_predictions) * 100, "%\n")
 
