@@ -10,16 +10,21 @@ from sklearn.model_selection import train_test_split
 import random
 import cv2
 import numpy as np
+from timeit import default_timer as timer
 
 def main():
+    print("On cherche à utiliser un réseau de neurones basique pour prédire la valeur des digits")
     #Chargement des données de train et de test, une image est de dimension 8*8 = 64 pixels
     x_train, x_test, y_train, y_test = chargement_donnees()
     #Création d'un réseau de neurones
     reseau = creer_reseau(64, 10)
     #Entrainement du réseau
     nb_entrainements = 2
+    time_start = timer()
     for i in range(0, nb_entrainements):
         reseau = entrainer_reseau(reseau, x_train, y_train, 3)
+    time_end = timer()
+    print("L'entrainement a duré", round(time_end-time_start, 2), "secondes")
 
     dessiner_reseau(reseau)
     #Prédictions sur les valeurs de test
@@ -111,7 +116,7 @@ def dessiner_reseau(reseau):
     vertical_5 = np.vstack((np.uint8(reseau[4]).reshape(8, 8), np.uint8(reseau[9]).reshape(8, 8)))
     img = img = np.hstack((vertical_1, vertical_2, vertical_3, vertical_4, vertical_5))
     img = cv2.resize(np.uint8(img), (960, 384), interpolation = cv2.INTER_AREA)
-    cv2.imshow("img", img)
+    cv2.imshow("poids", img)
 
 if __name__ == "__main__":
     main()   
