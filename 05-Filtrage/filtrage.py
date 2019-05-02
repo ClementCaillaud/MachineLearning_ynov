@@ -5,18 +5,12 @@ Created on Fri Mar 29 14:07:51 2019
 @author: Clément
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 from surprise import KNNWithMeans
 from surprise import Dataset
 from surprise import accuracy
 from surprise.model_selection import train_test_split
 
-# Load the movielens-100k dataset  UserID::MovieID::Rating::Timestamp
-data = Dataset.load_builtin('ml-100k')
-trainset, testset = train_test_split(data, test_size=.15)
-
-def user_collaborative_filtering():
+def user_collaborative_filtering(trainset, testset):
     
     # Use user_based true/false to switch between user-based or item-based collaborative filtering
     algo = KNNWithMeans(k=50, sim_options={'name': 'pearson_baseline', 'user_based': True})
@@ -41,4 +35,11 @@ def user_collaborative_filtering():
     #train_pred = algo.test(trainset.build_testset())
     #accuracy.rmse(train_pred)
 
-user_collaborative_filtering()
+def main():
+    # Load the movielens-100k dataset  UserID::MovieID::Rating::Timestamp
+    data = Dataset.load_builtin('ml-100k')
+    trainset, testset = train_test_split(data, test_size=.15)
+    user_collaborative_filtering(trainset, testset)
+
+if __name__ == "__main__":
+    main() 

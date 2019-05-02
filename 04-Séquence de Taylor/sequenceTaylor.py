@@ -57,8 +57,12 @@ def approximation(x, nMax):
         resultat += (x**n) / math.factorial(n)
     return resultat
 
-trouver_A()
-taylor()
+def main():
+    trouver_A()
+    taylor()
+
+if __name__ == "__main__":
+    main() 
 
     
 

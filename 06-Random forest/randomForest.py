@@ -10,7 +10,7 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
 def main():
-    
+    print("On cherche à prédire les valeurs des digits en utilisant une random forest")
     #Chargement des données
     digits = datasets.load_digits()
     
@@ -20,6 +20,7 @@ def main():
     
     #Création d'un jeu d'entrainement et d'un jeu de test
     x_train, x_test, y_train, y_test = train_test_split(data, target, test_size=0.33, random_state=42)
+    print("Entrainement sur", len(x_train), "images")
     
     #Création du classifieur
     rfc = RandomForestClassifier(n_estimators=100, max_depth=2, random_state=0)
@@ -44,7 +45,8 @@ def predict(rfc, x_test, y_test):
         nb_predictions += 1
     
     #Affichage précision
-    print("Précision de la prédiction : ", (nb_predictions_correctes / nb_predictions) * 100, "%")
+    print("Prédictions correctes:", nb_predictions_correctes, "/", nb_predictions)
+    print("Précision : ", round((nb_predictions_correctes / nb_predictions) * 100, 2), "%")
     
 if __name__ == "__main__":
     main()    
