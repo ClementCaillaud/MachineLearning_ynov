@@ -17,7 +17,7 @@ def main():
     #Création d'un réseau de neurones
     reseau = creer_reseau(64, 10)
     #Entrainement du réseau
-    nb_entrainements = 5
+    nb_entrainements = 4
     for i in range(0, nb_entrainements):
         reseau = entrainer_reseau(reseau, x_train, y_train, 1)
 
@@ -45,7 +45,7 @@ def creer_reseau(nb_entrees, nb_sorties):
     
 def creer_neurone(nb_entrees):
     """Créé un neuronne réagissant à nb_entrees entrées"""
-    tab_poids = [random.randint(1, 1) for i in range(0, nb_entrees)]
+    tab_poids = [random.randint(50, 201) for i in range(0, nb_entrees)]
     return tab_poids
 
 def entrainer_reseau(reseau, x_train, y_train, coefficient):
