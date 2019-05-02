@@ -109,13 +109,13 @@ def statistiques_prediction(predictions, y_test):
 
 def dessiner_reseau(reseau):
     """Dessine l'état des poids du réseau"""
-    vertical_1 = np.vstack((np.uint8(reseau[0]).reshape(8, 8), np.uint8(reseau[5]).reshape(8, 8)))
-    vertical_2 = np.vstack((np.uint8(reseau[1]).reshape(8, 8), np.uint8(reseau[6]).reshape(8, 8)))
-    vertical_3 = np.vstack((np.uint8(reseau[2]).reshape(8, 8), np.uint8(reseau[7]).reshape(8, 8)))
-    vertical_4 = np.vstack((np.uint8(reseau[3]).reshape(8, 8), np.uint8(reseau[8]).reshape(8, 8)))
-    vertical_5 = np.vstack((np.uint8(reseau[4]).reshape(8, 8), np.uint8(reseau[9]).reshape(8, 8)))
+    vertical_1 = np.vstack((np.uint8(reseau[0]).reshape(8, 8), np.zeros(64).reshape(8, 8), np.uint8(reseau[5]).reshape(8, 8)))
+    vertical_2 = np.vstack((np.uint8(reseau[1]).reshape(8, 8), np.zeros(64).reshape(8, 8), np.uint8(reseau[6]).reshape(8, 8)))
+    vertical_3 = np.vstack((np.uint8(reseau[2]).reshape(8, 8), np.zeros(64).reshape(8, 8), np.uint8(reseau[7]).reshape(8, 8)))
+    vertical_4 = np.vstack((np.uint8(reseau[3]).reshape(8, 8), np.zeros(64).reshape(8, 8), np.uint8(reseau[8]).reshape(8, 8)))
+    vertical_5 = np.vstack((np.uint8(reseau[4]).reshape(8, 8), np.zeros(64).reshape(8, 8), np.uint8(reseau[9]).reshape(8, 8)))
     img = img = np.hstack((vertical_1, vertical_2, vertical_3, vertical_4, vertical_5))
-    img = cv2.resize(np.uint8(img), (960, 384), interpolation = cv2.INTER_AREA)
+    img = cv2.resize(np.uint8(img), (960, 480), interpolation = cv2.INTER_AREA)
     cv2.imshow("poids", img)
 
 if __name__ == "__main__":
