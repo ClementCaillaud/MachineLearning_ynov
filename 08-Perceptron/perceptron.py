@@ -9,6 +9,7 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 import random
 import cv2
+import numpy as np
 
 def main():
     #Chargement des données de train et de test, une image est de dimension 8*8 = 64 pixels
@@ -16,17 +17,24 @@ def main():
     #Création d'un réseau de neurones
     reseau = creer_reseau(64, 10)
     #Entrainement du réseau
-    reseau = entrainer_reseau(reseau, x_train, y_train, 1)
+    nb_entrainements = 5
+    for i in range(0, nb_entrainements):
+        reseau = entrainer_reseau(reseau, x_train, y_train, 1)
+
+    dessiner_reseau(reseau)
     #Prédictions sur les valeurs de test
     predictions = predire(reseau, x_test)
     statistiques_prediction(predictions, y_test)
+    
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 def chargement_donnees():
     """Retourne les données d'entrainement et de test"""
     digits = datasets.load_digits()
     data = digits['data']
     target = digits['target']
-    return train_test_split(data, target, test_size=0.2, random_state=42)
+    return train_test_split(data, target, test_size=0.3)
 
 def creer_reseau(nb_entrees, nb_sorties):
     """Créé un réseau de neurones avec nb_entrees entrées et nb_sorties sorties"""
@@ -37,7 +45,7 @@ def creer_reseau(nb_entrees, nb_sorties):
     
 def creer_neurone(nb_entrees):
     """Créé un neuronne réagissant à nb_entrees entrées"""
-    tab_poids = [random.randint(1,50) for i in range(0, nb_entrees)]
+    tab_poids = [random.randint(1, 1) for i in range(0, nb_entrees)]
     return tab_poids
 
 def entrainer_reseau(reseau, x_train, y_train, coefficient):
@@ -53,7 +61,7 @@ def entrainer_reseau(reseau, x_train, y_train, coefficient):
 def ajuster_poids(neurone, image, coefficient):
     """Ajuste les poids du neurone"""
     for key_pixel, pixel in enumerate(image):
-        if pixel > 0 and neurone[key_pixel] < 50:
+        if pixel > 0 and neurone[key_pixel] < 255:
             neurone[key_pixel] += coefficient
         elif neurone[key_pixel] > 0:
             neurone[key_pixel] -= coefficient
@@ -93,6 +101,17 @@ def statistiques_prediction(predictions, y_test):
     print("Nombre d'images testées :", nb_predictions)
     print("Nombre de prédictions correctes :", nb_predictions_correctes)
     print("Précision :", round((nb_predictions_correctes * 100) / nb_predictions, 2), "%")
+
+def dessiner_reseau(reseau):
+    """Dessine l'état des poids du réseau"""
+    vertical_1 = np.vstack((np.uint8(reseau[0]).reshape(8, 8), np.uint8(reseau[5]).reshape(8, 8)))
+    vertical_2 = np.vstack((np.uint8(reseau[1]).reshape(8, 8), np.uint8(reseau[6]).reshape(8, 8)))
+    vertical_3 = np.vstack((np.uint8(reseau[2]).reshape(8, 8), np.uint8(reseau[7]).reshape(8, 8)))
+    vertical_4 = np.vstack((np.uint8(reseau[3]).reshape(8, 8), np.uint8(reseau[8]).reshape(8, 8)))
+    vertical_5 = np.vstack((np.uint8(reseau[4]).reshape(8, 8), np.uint8(reseau[9]).reshape(8, 8)))
+    img = img = np.hstack((vertical_1, vertical_2, vertical_3, vertical_4, vertical_5))
+    img = cv2.resize(np.uint8(img), (960, 384), interpolation = cv2.INTER_AREA)
+    cv2.imshow("img", img)
 
 if __name__ == "__main__":
     main()   
