@@ -17,9 +17,9 @@ def main():
     #Création d'un réseau de neurones
     reseau = creer_reseau(64, 10)
     #Entrainement du réseau
-    nb_entrainements = 4
+    nb_entrainements = 2
     for i in range(0, nb_entrainements):
-        reseau = entrainer_reseau(reseau, x_train, y_train, 1)
+        reseau = entrainer_reseau(reseau, x_train, y_train, 3)
 
     dessiner_reseau(reseau)
     #Prédictions sur les valeurs de test
@@ -61,9 +61,9 @@ def entrainer_reseau(reseau, x_train, y_train, coefficient):
 def ajuster_poids(neurone, image, coefficient):
     """Ajuste les poids du neurone"""
     for key_pixel, pixel in enumerate(image):
-        if pixel > 0 and neurone[key_pixel] < 255:
+        if pixel > 0 and neurone[key_pixel] + coefficient < 255:
             neurone[key_pixel] += coefficient
-        elif neurone[key_pixel] > 0:
+        elif neurone[key_pixel] - coefficient > 0:
             neurone[key_pixel] -= coefficient
     return neurone
 
